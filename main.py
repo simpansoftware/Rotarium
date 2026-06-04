@@ -18,14 +18,14 @@ if arg == "install":
     if len(sys.argv) < 3:
         print("you didnt specify a package")
     else:
-        helper.install(sys.argv[2])
+        helper.install_package(sys.argv[2])
         print("done!")
 elif arg == "remove":
     print("stub")
 elif arg == "run":
     helper.run(sys.argv[2], sys.argv[3:])
 elif arg == "pyrun":
-    print("stub")
+    helper.pyrun(sys.argv[2], sys.argv[3:])
 elif arg == "help":
     print(helptext)
 else:
