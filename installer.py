@@ -5,15 +5,15 @@ import platform
 
 print("Rotarium Installer")
 time.sleep(2)
-if platform in ("Linux", "Darwin", "Windows"):
-    install = input("Do you want to install? y/N")
-    if install == "y":
+if platform.system() in ("Linux", "Darwin", "Windows"):
+    install = input("Do you want to install Rotarium? y/N ")
+    if install.lower() in ("y", "yes"):
         with open(".installed", "w") as f:
             f.write("")
-        subprocess.run(["python", "-m", "venv", "venv"])
+        subprocess.run([sys.executable, "-m", "venv", "venv"])
         print("installed! have a nice day!")
     else:
         print("okay bye!")
-        sys.exit
+        sys.exit()
 else:
-    print("Unsupported OS, have a nice day!")
+    print(f"Unsupported OS: {platform.system()}, have a nice day!")
