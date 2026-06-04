@@ -15,12 +15,8 @@ def install_package(package):
     else:
         if package.startswith("python-"):
             thing = package[len("python-"):]
-            if platform.system() in ("Linux", "Darwin"):
-                print("installing:", package)
-                subprocess.run(["packages/venv/bin/python", "-m", "pip", "install", thing])
-            else:
-                print("installing:", package)
-                subprocess.run(["packages/venv/Scripts/python.exe", "-m", "pip", "install", thing])
+            print("installing:", package)
+            subprocess.run([get_venv(), "-m", "pip", "install", thing])
             with open(".installed", "a") as f:
                 f.write(f"{package}\n")
         else:
@@ -46,9 +42,23 @@ def pyrun(thing, args=None):
 def is_installed(package):
     try:
         with open(".installed", "r") as f:
-            return package in [line.strip() for line in f]
+            return package in [i.strip() for i in f]
     except FileNotFoundError:
         return False
     
 def uninstall(package):
-    
+    if not is_installed(package):
+        print(f"{package} isn't installed")
+    else:
+        if package.startswith("python-"):
+            thing = package[len("python-"):]
+            subprocess.run([get_venv(), "-m", "pip", "uninstall", "-y", thing])
+            with open(".installed", "r") as f:
+                linething = f.readlines()
+            with open(".installed", "w") as f:
+                for i in linething:
+                    if i.strip() != package:
+                        f.write(i)
+            print(f"uninstalled {package}")
+        else:
+            print("remind me to implement this later")
