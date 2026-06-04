@@ -22,7 +22,7 @@ def run(thing, args=None):
     if thing.startswith("python-"):
         package = thing[len("python-"):]
         
-        print(f"running python package: {package}")
+        print(f"running {package}")
 
         subprocess.run([str(get_venv()), "-m", package, *args])
 
