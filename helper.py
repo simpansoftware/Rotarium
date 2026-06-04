@@ -17,10 +17,11 @@ def install_package(package):
             thing = package[len("python-"):]
             print("installing:", package)
             subprocess.run([get_venv(), "-m", "pip", "install", thing])
-            with open(".installed", "a") as f:
-                f.write(f"{package}\n")
         else:
-            print("yeah no im doing this later")
+            if platform.system() == "Linux":
+                print("linux")
+            else:
+                print("windows")
 
 def run(thing, args=None):
     if args is None:

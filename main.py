@@ -19,6 +19,8 @@ if arg == "install":
         print("you didnt specify a package")
     else:
         helper.install_package(sys.argv[2])
+        with open(".installed", "a") as f:
+            f.write(f"{sys.argv[2]}\n")
         print("done!")
 elif arg == "remove":
     helper.uninstall(sys.argv[2])
