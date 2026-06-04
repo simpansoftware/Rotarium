@@ -1,16 +1,23 @@
 import sys
 
 print("Rotarium\n")
+helptext = """
+usage:
+    python main.py install <package>
+    python main.py remove <package>
+    python main.py help
+"""
 if len(sys.argv) < 2:
-    print("looks like you didnt pass an argument!\nuh oh, help is on the way!\nso like uhh\npython rotarium.py install and then whatever package to install i guess\npython rotarium.py remove and then whatever package to delete")
+    print(helptext)
     sys.exit()
 arg = sys.argv[1]
+
 
 if arg == "install":
     print("stub")
 elif arg == "remove":
     print("stub")
 elif arg == "help":
-    print("looks like you didnt pass an argument!\nuh oh, help is on the way!\nso like uhh\npython rotarium.py install and then whatever package to install i guess\npython rotarium.py remove and then whatever package to delete")
+    print(helptext)
 else:
-    print("looks like you passed an illegal argument!\nuh oh, help is on the way!\nso like uhh\npython rotarium.py install and then whatever package to install i guess\npython rotarium.py remove and then whatever package to delete")
+    print(helptext)
