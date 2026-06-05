@@ -37,8 +37,10 @@ def install(package):
             thing = input("y/N ")
             if thing.lower() == "y":
                 exec(rbutraw.decode("utf-8"))
+                return 0
             else:
                 print("okay ba bye")
+                return 0
     else:
         print("specified package does not exist")
 
@@ -61,4 +63,4 @@ def register_package(package, binary_path, package_dir=None):
 # why did i spend 30 minutes debugging just to forget this :sob:
 if __name__ == "__main__":
     if len(sys.argv) >= 3:
-        install(sys.argv[2])
+        sys.exit(install(sys.argv[2]))
