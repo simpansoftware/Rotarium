@@ -17,9 +17,18 @@ def install_package(package):
         if package.startswith("python-"):
             thing = package[len("python-"):]
             print("installing:", package)
-            subprocess.run([get_venv(), "-m", "pip", "install", thing])
+            result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
+            with open(".installed", "a") as f:
+                f.write(f"{package}\n")
         else:
-            pyrun(f"helper4packages.py {platform.system()} {package}")
+            result = subprocess.run([get_venv(), os.path.abspath("helper4packages.py"), platform.system(), package])
+        
+        if result.returncode == 0:
+            with open(".installed", "a") as f:
+                f.write(f"{package}\n")
+            print("done!")
+        else:
+            print("uhh something failed and i dont know what")
 
 def run(thing, args=None):
     if args is None:
@@ -28,7 +37,6 @@ def run(thing, args=None):
         package = thing[len("python-"):]
         print(f"running {package}")
         subprocess.run([str(get_venv()), "-m", package, *args])
-
     else:
         print("so uhh i forgot to do this part")
 

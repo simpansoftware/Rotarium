@@ -19,6 +19,8 @@ if platform.system() in ("Linux", "Windows"):
             Path("packages/windows").mkdir(parents=True, exist_ok=True)      
         subprocess.run([sys.executable, "-m", "venv", "packages/venv"])
         helper.install_package("python-requests")
+        with open(".installed", "w") as f:
+            f.write("")
         print("installed! have a nice day!")
     else:
         print("okay bye!")

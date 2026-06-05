@@ -22,9 +22,6 @@ if arg == "install":
         print("you didnt specify a package")
     else:
         helper.install_package(sys.argv[2])
-        with open(".installed", "a") as f:
-            f.write(f"{sys.argv[2]}\n")
-        print("done!")
 elif arg == "remove":
     helper.uninstall(sys.argv[2])
 elif arg == "run":
@@ -38,6 +35,6 @@ elif arg == "list":
     with open(".installed") as f:
         print(f.read())
 elif arg == "search":
-    print("todo")
+    helper4packages.search(sys.argv[2])
 else:
     print(helptext)
