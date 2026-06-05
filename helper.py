@@ -26,6 +26,8 @@ def install_package(package):
             with open(".installed", "a") as f:
                 f.write(f"{package}\n")
             print("done!")
+        elif result.returncode == 2:
+            print("install aborted")
         else:
             print("uhh something failed and i dont know what")
 

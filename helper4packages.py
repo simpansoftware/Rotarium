@@ -40,7 +40,7 @@ def install(package):
                 return 0
             else:
                 print("okay ba bye")
-                return 0
+                return 2
     else:
         print("specified package does not exist")
 
