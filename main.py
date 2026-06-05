@@ -7,7 +7,8 @@ helptext = """usage:
     python main.py remove <package>
     python main.py run <package>
     python main.py pyrun <python script> 
-    python main.py help"""
+    python main.py help
+    python main.py list"""
 
 if len(sys.argv) < 2:
     print(helptext)
@@ -30,5 +31,9 @@ elif arg == "pyrun":
     helper.pyrun(sys.argv[2], sys.argv[3:])
 elif arg == "help":
     print(helptext)
+elif arg == "list":
+    print("installed packages:")
+    with open(".installed") as f:
+        print(f.read())
 else:
     print(helptext)
