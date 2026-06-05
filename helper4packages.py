@@ -32,7 +32,8 @@ def install(package):
 def register_package(package, binary_path, package_dir=None):
     try:
         with open("packages.json", "r") as f:
-            data = json.load(f)
+            content = f.read()
+            data = json.loads(content) if content.strip() else {}
     except FileNotFoundError:
         data = {}
     
