@@ -21,7 +21,7 @@ def install(package):
     if package.lower() in packages:
         r = requests.get(f"https://raw.githubusercontent.com/simpansoftware/rotarium-repo/refs/heads/main/{platform.system()}/{package.lower()}.py")
         print(f"do you want to install {package}?")
-        thing = input("y/N")
+        thing = input("y/N ")
         if thing.lower() == "y":
             exec(r.text)
         else:
