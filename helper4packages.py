@@ -6,14 +6,17 @@ import json
 def search(package):
     r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
     print("available packages:")
-    packages = [i for i in r.text.splitlines() if package.lower() in i.lower()]
-    if packages:
-        for i in packages:
-            print(i)
+    if package == "*":
+        print(r.text)
     else:
-        print("uhh no packages are here i guess?")
+        packages = [i for i in r.text.splitlines() if package.lower() in i.lower()]
+        if packages:
+            for i in packages:
+                print(i)
+        else:
+            print("uhh no packages are here i guess?")
 
-    return packages
+        return packages
 
 def install(package):
     r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
