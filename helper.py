@@ -18,10 +18,7 @@ def install_package(package):
             print("installing:", package)
             subprocess.run([get_venv(), "-m", "pip", "install", thing])
         else:
-            if platform.system() == "Linux":
-                print("linux")
-            else:
-                print("windows")
+            pyrun(f"helper4packages.py {platform.system()} {package}")
 
 def run(thing, args=None):
     if args is None:
