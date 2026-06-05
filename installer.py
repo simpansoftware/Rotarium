@@ -21,6 +21,8 @@ if platform.system() in ("Linux", "Windows"):
         helper.install_package("python-requests")
         with open(".installed", "w") as f:
             f.write("")
+        with open("packages.json", "w") as f:
+            f.write("")
         print("installed! have a nice day!")
     else:
         print("okay bye!")

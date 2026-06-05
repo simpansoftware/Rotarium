@@ -1,7 +1,8 @@
 import subprocess
 import platform
 import os
-import helper4packages
+import json
+import shutil
 
 def get_venv():
     if platform.system() in ("Linux", "Darwin"):
@@ -18,8 +19,6 @@ def install_package(package):
             thing = package[len("python-"):]
             print("installing:", package)
             result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
-            with open(".installed", "a") as f:
-                f.write(f"{package}\n")
         else:
             result = subprocess.run([get_venv(), os.path.abspath("helper4packages.py"), platform.system(), package])
         
@@ -38,7 +37,12 @@ def run(thing, args=None):
         print(f"running {package}")
         subprocess.run([str(get_venv()), "-m", package, *args])
     else:
-        print("so uhh i forgot to do this part")
+        with open("packages.json", "r") as f:
+            data = json.load(f)
+        if thing in data:
+            subprocess.run([data[thing]["binary"], *args])
+        else:
+            print(f"{thing} isn't installed")
 
 def pyrun(thing, args=None):
     if args is None:
@@ -60,12 +64,25 @@ def uninstall(package):
         if package.startswith("python-"):
             thing = package[len("python-"):]
             subprocess.run([get_venv(), "-m", "pip", "uninstall", "-y", thing])
-            with open(".installed", "r") as f:
-                linething = f.readlines()
-            with open(".installed", "w") as f:
-                for i in linething:
-                    if i.strip() != package:
-                        f.write(i)
-            print(f"uninstalled {package}")
         else:
-            print("remind me to implement this later")
+            try:
+                with open("packages.json", "r") as f:
+                    data = json.load(f)
+                if package in data:
+                    if data[package].get("dir"):
+                        shutil.rmtree(data[package]["dir"])
+                    else:
+                        os.remove(data[package]["binary"])
+                    del data[package]
+                    with open("packages.json", "w") as f:
+                        json.dump(data, f, indent=4)
+            except FileNotFoundError:
+                pass
+
+        with open(".installed", "r") as f:
+            linething = f.readlines()
+        with open(".installed", "w") as f:
+            for i in linething:
+                if i.strip() != package:
+                    f.write(i)
+        print(f"uninstalled {package}")
