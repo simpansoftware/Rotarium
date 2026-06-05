@@ -28,7 +28,6 @@ def install(package):
         rbutraw = r.content
         sha256strip = sha256.text.strip()
         thingtwo = hashlib.sha256(rbutraw).hexdigest()
-        print(thingtwo)
         if thingtwo != sha256strip:
             print("package has been tampered with, do not trust")
             return 1
