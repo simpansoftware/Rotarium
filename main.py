@@ -1,5 +1,6 @@
 import sys
 import helper
+import helper4packages
 
 print("Rotarium\n")
 helptext = """usage:
@@ -7,6 +8,7 @@ helptext = """usage:
     python main.py remove <package>
     python main.py run <package>
     python main.py pyrun <python script> 
+    python main.py search <package>
     python main.py help
     python main.py list"""
 
@@ -35,5 +37,7 @@ elif arg == "list":
     print("installed packages:")
     with open(".installed") as f:
         print(f.read())
+elif arg == "search":
+    print("todo")
 else:
     print(helptext)
