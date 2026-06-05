@@ -4,7 +4,7 @@ import sys
 import json
 
 def search(package):
-    r = requests.get(f"https://raw.githubusercontent.com/simpansoftware/rotarium-repo/refs/heads/main/{platform.system()}.txt")
+    r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
     print("available packages:")
     packages = [i for i in r.text.splitlines() if package.lower() in i.lower()]
     if packages:
@@ -16,10 +16,10 @@ def search(package):
     return packages
 
 def install(package):
-    r = requests.get(f"https://raw.githubusercontent.com/simpansoftware/rotarium-repo/refs/heads/main/{platform.system()}.txt")
+    r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
     packages = [i.strip().lower() for i in r.text.splitlines()]
     if package.lower() in packages:
-        r = requests.get(f"https://raw.githubusercontent.com/simpansoftware/rotarium-repo/refs/heads/main/{platform.system()}/{package.lower()}.py")
+        r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}.py")
         print(f"do you want to install {package}?")
         thing = input("y/N ")
         if thing.lower() == "y":
