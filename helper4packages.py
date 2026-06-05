@@ -2,6 +2,7 @@ import requests
 import platform
 import sys
 import json
+import hashlib
 
 def search(package):
     r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
@@ -23,12 +24,21 @@ def install(package):
     packages = [i.strip().lower() for i in r.text.splitlines()]
     if package.lower() in packages:
         r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}.py")
-        print(f"do you want to install {package}?")
-        thing = input("y/N ")
-        if thing.lower() == "y":
-            exec(r.text)
+        sha256 = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}.py.sha256")
+        rbutraw = r.content
+        sha256strip = sha256.text.strip()
+        thingtwo = hashlib.sha256(rbutraw).hexdigest()
+        print(thingtwo)
+        if thingtwo != sha256strip:
+            print("package has been tampered with, do not trust")
+            return 1
         else:
-            print("okay ba bye")
+            print(f"do you want to install {package}?")
+            thing = input("y/N ")
+            if thing.lower() == "y":
+                exec(rbutraw.decode("utf-8"))
+            else:
+                print("okay ba bye")
     else:
         print("specified package does not exist")
 
