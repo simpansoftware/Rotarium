@@ -23,6 +23,8 @@ if platform.system() in ("Linux", "Windows"):
         helper.install_package("wedonottalkaboutrequeststhisishighlyneededforsetupifyouinstallthisyourrotariumwillbreakthatisnotonme")
         with open("packages.json", "w") as f:
             f.write("{}")
+        with open("repos.txt", "w") as f:
+            f.write("https://simpansoftware.cc/rotarium-repo/")
         print("installed! have a nice day!")
     else:
         print("okay bye!")
