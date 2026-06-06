@@ -1,6 +1,7 @@
 import sys
 import helper
 import helper4packages
+import upgrade
 import json
 
 print("Rotarium\n")
@@ -59,6 +60,6 @@ elif arg == "upgrade":
     if len(sys.argv) < 3:
         print("specify a package next time, kay?")
     else:
-        helper4packages.upgrade(sys.argv[2])
+        upgrade.upgrade(sys.argv[2])
 else:
     print(helptext)
