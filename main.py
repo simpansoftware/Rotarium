@@ -9,7 +9,7 @@ helptext = """usage:
     python main.py remove <package> - uninstalls an installed package
     python main.py run <package> - runs an installed package
     python main.py pyrun <python script> - runs a python script with the rotarium venv
-    python main.py search <package> - searches for a package, search * to see all packages
+    python main.py search <package> - searches for a package, search * to see all packages, on linux PLEASE quote the star
     python main.py help - displays this message
     python main.py list - lists installed packages
     python main.py version <package> - gets version of installed package
