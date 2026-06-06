@@ -93,18 +93,18 @@ def uninstall(package):
                 with open("packages.json", "w") as f:
                     json.dump(data, f, indent=4)
         else:
-                try:
-                    with open("packages.json", "r") as f:
-                        data = json.load(f)
-                except json.JSONDecodeError:
-                    data = {}
-                if package in data:
-                    if data[package].get("dir"):
-                        shutil.rmtree(data[package]["dir"])
-                    else:
-                        os.remove(data[package]["binary"])
-                    del data[package]
-                    with open("packages.json", "w") as f:
-                        json.dump(data, f, indent=4)
+            try:
+                with open("packages.json", "r") as f:
+                    data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+            if package in data:
+                if data[package].get("dir"):
+                    shutil.rmtree(data[package]["dir"])
+                else:
+                    os.remove(data[package]["binary"])
+                del data[package]
+                with open("packages.json", "w") as f:
+                    json.dump(data, f, indent=4)
 
         print(f"uninstalled {package}")
