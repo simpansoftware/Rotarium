@@ -23,13 +23,29 @@ def install_package(package):
             result = subprocess.run([get_venv(), os.path.abspath("helper4packages.py"), platform.system(), package])
         
         if result.returncode == 0:
-            with open(".installed", "a") as f:
-                f.write(f"{package}\n")
+            if package.startswith("python-"):
+                register_pypackage(package)
             print("done!")
         elif result.returncode == 2:
             print("install aborted")
         else:
             print("uhh something failed and i dont know what")
+
+#copied straight out of helper4packages with some json change
+def register_pypackage(package):
+    try:
+        with open("packages.json", "r") as f:
+            content = f.read()
+            data = json.loads(content) if content.strip() else {}
+    except FileNotFoundError:
+        data = {}
+    
+    data[package] = {
+        "type": "python",
+    }
+    
+    with open("packages.json", "w") as f:
+        json.dump(data, f, indent=4)
 
 def run(thing, args=None):
     if args is None:
@@ -53,23 +69,35 @@ def pyrun(thing, args=None):
     subprocess.run([get_venv(), os.path.abspath(thing), *args])
 
 def is_installed(package):
-    try:
-        with open(".installed", "r") as f:
-            return package in [i.strip() for i in f]
-    except FileNotFoundError:
-        return False
+    with open("packages.json", "r") as f:
+        shittyvariablename = json.load(f)
+    return package in shittyvariablename
     
 def uninstall(package):
     if not is_installed(package):
         print(f"{package} isn't installed")
+        return
     else:
+        data = {}
         if package.startswith("python-"):
             thing = package[len("python-"):]
             subprocess.run([get_venv(), "-m", "pip", "uninstall", "-y", thing])
-        else:
             try:
                 with open("packages.json", "r") as f:
                     data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+
+            if package in data:
+                del data[package]
+                with open("packages.json", "w") as f:
+                    json.dump(data, f, indent=4)
+        else:
+                try:
+                    with open("packages.json", "r") as f:
+                        data = json.load(f)
+                except json.JSONDecodeError:
+                    data = {}
                 if package in data:
                     if data[package].get("dir"):
                         shutil.rmtree(data[package]["dir"])
@@ -78,13 +106,5 @@ def uninstall(package):
                     del data[package]
                     with open("packages.json", "w") as f:
                         json.dump(data, f, indent=4)
-            except FileNotFoundError:
-                pass
 
-        with open(".installed", "r") as f:
-            linething = f.readlines()
-        with open(".installed", "w") as f:
-            for i in linething:
-                if i.strip() != package:
-                    f.write(i)
         print(f"uninstalled {package}")

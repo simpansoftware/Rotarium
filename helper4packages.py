@@ -27,19 +27,23 @@ def install(package):
         sha256 = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}.py.sha256")
         rbutraw = r.content
         sha256strip = sha256.text.strip()
-        thingtwo = hashlib.sha256(rbutraw).hexdigest()
-        if thingtwo != sha256strip:
-            print("package has been tampered with (or is corrupt), please retry installation")
+        if len(sha256strip) != 64:
+            print("the hash didn't download correctly, please retry installation")
             return 1
         else:
-            print(f"do you want to install {package}?")
-            thing = input("y/N ")
-            if thing.lower() == "y":
-                exec(rbutraw.decode("utf-8"))
-                return 0
+            thingtwo = hashlib.sha256(rbutraw).hexdigest()
+            if thingtwo != sha256strip:
+                print("package has been tampered with (or is corrupt), please retry installation")
+                return 1
             else:
-                print("okay ba bye")
-                return 2
+                print(f"do you want to install {package}?")
+                thing = input("y/N ")
+                if thing.lower() == "y":
+                    exec(rbutraw.decode("utf-8"))
+                    return 0
+                else:
+                    print("okay ba bye")
+                    return 2
     else:
         print("specified package does not exist")
 

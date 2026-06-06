@@ -4,13 +4,13 @@ import helper4packages
 
 print("Rotarium\n")
 helptext = """usage:
-    python main.py install <package>
-    python main.py remove <package>
-    python main.py run <package>
-    python main.py pyrun <python script> 
-    python main.py search <package>
-    python main.py help
-    python main.py list"""
+    python main.py install <package> - installs a package
+    python main.py remove <package> - uninstalls an installed package
+    python main.py run <package> - runs an installed package
+    python main.py pyrun <python script> - runs a python script with the rotarium venv
+    python main.py search <package> - searches for a package, search * to see all packages
+    python main.py help - displays this message
+    python main.py list - lists installed packages"""
 
 if len(sys.argv) < 2:
     print(helptext)
