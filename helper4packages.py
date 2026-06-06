@@ -23,8 +23,14 @@ def install(package):
     r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
     packages = [i.strip().lower() for i in r.text.splitlines()]
     if package.lower() in packages:
-        r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}.py")
-        sha256 = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}.py.sha256")
+        r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}/install.py")
+        sha256 = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}/install.py.sha256")
+        manifest = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}/manifest.json").json()
+        required = ["name", "version", "info"]
+        for bread in required: #because bread taste better than key
+            if bread not in manifest:
+                print("broken manifest")
+                return 1
         rbutraw = r.content
         sha256strip = sha256.text.strip()
         if len(sha256strip) != 64:
@@ -39,7 +45,7 @@ def install(package):
                 print(f"do you want to install {package}?")
                 thing = input("y/N ")
                 if thing.lower() == "y":
-                    exec(rbutraw.decode("utf-8"))
+                    exec(rbutraw.decode("utf-8"), globals())
                     return 0
                 else:
                     print("okay ba bye")
@@ -47,7 +53,7 @@ def install(package):
     else:
         print("specified package does not exist")
 
-def register_package(package, binary_path, package_dir=None):
+def register_package(package, binary_path, version, info, package_dir=None):
     try:
         with open("packages.json", "r") as f:
             content = f.read()
@@ -57,7 +63,9 @@ def register_package(package, binary_path, package_dir=None):
     
     data[package] = {
         "binary": binary_path,
-        "dir": package_dir
+        "dir": package_dir,
+        "version": version,
+        "info": info
     }
     
     with open("packages.json", "w") as f:
