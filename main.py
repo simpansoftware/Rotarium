@@ -7,6 +7,7 @@ print("Rotarium\n")
 helptext = """usage:
     python main.py install <package> - installs a package
     python main.py remove <package> - uninstalls an installed package
+    python main.py upgrade <package> - upgrades an installed package
     python main.py run <package> - runs an installed package
     python main.py pyrun <python script> - runs a python script with the rotarium venv
     python main.py search <package> - searches for a package, search * to see all packages, on linux PLEASE quote the star
@@ -54,5 +55,10 @@ elif arg == "info":
         print("specify a package next time, kay?")
     else:
         helper.getinfo(sys.argv[2])
+elif arg == "upgrade":
+    if len(sys.argv) < 3:
+        print("specify a package next time, kay?")
+    else:
+        helper4packages.upgrade(sys.argv[2])
 else:
     print(helptext)
