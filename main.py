@@ -1,6 +1,7 @@
 import sys
 import helper
 import helper4packages
+import json
 
 print("Rotarium\n")
 helptext = """usage:
@@ -34,19 +35,24 @@ elif arg == "help":
     print(helptext)
 elif arg == "list":
     print("installed packages:")
-    with open(".installed") as f:
-        print(f.read())
+    with open("packages.json", "r") as f:
+        data = json.load(f)
+    if not data:
+        print("no packages installed")
+    else:
+        for i in data:
+            print(i)
 elif arg == "search":
     helper4packages.search(sys.argv[2])
 elif arg == "version":
     if len(sys.argv) < 3:
         print("specify a package next time, kay?")
     else:
-        helper.get_version(sys.argv[2])
-elif arg == "version":
+        helper.getver(sys.argv[2])
+elif arg == "info":
     if len(sys.argv) < 3:
         print("specify a package next time, kay?")
     else:
-        helper.info(sys.argv[2])
+        helper.getinfo(sys.argv[2])
 else:
     print(helptext)

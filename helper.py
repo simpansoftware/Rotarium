@@ -16,9 +16,13 @@ def install_package(package):
         return
     else:
         if package.startswith("python-"):
-            thing = package[len("python-"):]
-            print("installing:", package)
-            result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
+            if package == "python-requests":
+                print("nope, thats a system dependency, cant do that")
+                return 2
+            else:
+                thing = package[len("python-"):]
+                print("installing:", package)
+                result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
         else:
             result = subprocess.run([get_venv(), os.path.abspath("helper4packages.py"), platform.system(), package])
         
@@ -121,7 +125,7 @@ def getver(package):
         return
     print(data.get("version", "unknown"))
 
-def get_info(package):
+def getinfo(package):
     data = package_data(package)
     if not data:
         print("package not installed")
