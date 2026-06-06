@@ -20,7 +20,7 @@ if platform.system() in ("Linux", "Windows"):
         result = subprocess.run([sys.executable, "-m", "venv", "packages/venv"])
         if result.returncode != 0:
             print("venv creation failed, install the dependencies i told you install and be happy, exiting...")
-        helper.install_package("python-requests")
+        helper.install_package("wedonottalkaboutrequeststhisishighlyneededforsetupifyouinstallthisyourrotariumwillbreakthatisnotonme")
         with open("packages.json", "w") as f:
             f.write("{}")
         print("installed! have a nice day!")

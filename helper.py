@@ -15,6 +15,8 @@ def install_package(package):
         print(f"{package} is already installed")
         return
     else:
+        if package == "wedonottalkaboutrequeststhisishighlyneededforsetupifyouinstallthisyourrotariumwillbreakthatisnotonme":
+            result = subprocess.run([get_venv(), "-m", "pip", "install", "requests"])
         if package.startswith("python-"):
             if package == "python-requests":
                 print("nope, thats a system dependency, cant do that")
