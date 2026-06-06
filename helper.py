@@ -108,3 +108,22 @@ def uninstall(package):
                     json.dump(data, f, indent=4)
 
         print(f"uninstalled {package}")
+
+def package_data(package):
+    with open("packages.json", "r") as f:
+        data = json.load(f)
+    return data.get(package)
+
+def getver(package):
+    data = package_data(package)
+    if not data:
+        print("package not installed")
+        return
+    print(data.get("version", "unknown"))
+
+def get_info(package):
+    data = package_data(package)
+    if not data:
+        print("package not installed")
+        return
+    print(data.get("info", "no info available"))

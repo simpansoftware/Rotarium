@@ -26,7 +26,7 @@ def install(package):
         r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}/install.py")
         sha256 = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}/install.py.sha256")
         manifest = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}/{package.lower()}/manifest.json").json()
-        required = ["name", "version", "info"]
+        required = ["package", "version", "info"]
         for bread in required: #because bread taste better than key
             if bread not in manifest:
                 print("broken manifest")
@@ -45,7 +45,9 @@ def install(package):
                 print(f"do you want to install {package}?")
                 thing = input("y/N ")
                 if thing.lower() == "y":
-                    exec(rbutraw.decode("utf-8"), globals())
+                    env = globals().copy()
+                    env["manifest"] = manifest
+                    exec(rbutraw.decode("utf-8"), env)
                     return 0
                 else:
                     print("okay ba bye")

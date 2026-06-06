@@ -10,7 +10,9 @@ helptext = """usage:
     python main.py pyrun <python script> - runs a python script with the rotarium venv
     python main.py search <package> - searches for a package, search * to see all packages
     python main.py help - displays this message
-    python main.py list - lists installed packages"""
+    python main.py list - lists installed packages
+    python main.py version <package> - gets version of installed package
+    python main.py info <package> - gets info of installed package"""
 
 if len(sys.argv) < 2:
     print(helptext)
@@ -36,5 +38,15 @@ elif arg == "list":
         print(f.read())
 elif arg == "search":
     helper4packages.search(sys.argv[2])
+elif arg == "version":
+    if len(sys.argv) < 3:
+        print("specify a package next time, kay?")
+    else:
+        helper.get_version(sys.argv[2])
+elif arg == "version":
+    if len(sys.argv) < 3:
+        print("specify a package next time, kay?")
+    else:
+        helper.info(sys.argv[2])
 else:
     print(helptext)
