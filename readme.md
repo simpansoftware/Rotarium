@@ -15,7 +15,7 @@ Made for Hack Club Stardance<br>
 2. Go into the folder that you either cloned or unzipped or whatever
 3. Open a terminal
 4. Run
-```python installer.py ```
+```python installer.py```
 5. It's installed! Run 
 ```python main.py help``` 
 to see all commands
