@@ -15,16 +15,10 @@ def install_package(package):
         print(f"{package} is already installed")
         return
     else:
-        if package == "wedonottalkaboutrequeststhisishighlyneededforsetupifyouinstallthisyourrotariumwillbreakthatisnotonme":
-            result = subprocess.run([get_venv(), "-m", "pip", "install", "requests"])
         if package.startswith("python-"):
-            if package == "python-requests":
-                print("nope, thats a system dependency, cant do that")
-                return 2
-            else:
-                thing = package[len("python-"):]
-                print("installing:", package)
-                result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
+            thing = package[len("python-"):]
+            print("installing:", package)
+            result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
         else:
             result = subprocess.run([get_venv(), os.path.abspath("helper4packages.py"), platform.system(), package])
         

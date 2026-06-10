@@ -4,6 +4,8 @@ import helper4packages
 import upgrade
 import json
 
+dependencies = {"python-requests"}
+
 print("Rotarium\n")
 helptext = """usage:
     python main.py install <package> - installs a package
@@ -26,9 +28,18 @@ if arg == "install":
     if len(sys.argv) < 3:
         print("you didnt specify a package")
     else:
-        helper.install_package(sys.argv[2])
+        if sys.argv[2] in dependencies:
+            print(f"{sys.argv[2]} is a dependency, installed during setup")
+        else:
+            helper.install_package(sys.argv[2])
 elif arg == "remove":
-    helper.uninstall(sys.argv[2])
+    if len(sys.argv) < 3:
+        print("you didnt specify a package")
+    else:
+        if sys.argv[2] in dependencies:
+            print(f"{sys.argv[2]} is a dependency, can't be uninstalled")
+        else:
+            helper.uninstall(sys.argv[2])
 elif arg == "run":
     helper.run(sys.argv[2], sys.argv[3:])
 elif arg == "pyrun":
