@@ -1,7 +1,7 @@
 # Rotarium
 A really stupid package manager<br>
 Made for Hack Club Stardance<br>
-![my hackatime of 8 hours and 7 minutes](https://hackatime.hackclub.com/api/v1/badge/4lvaret/simpansoftware/Rotarium)
+![my hackatime](https://hackatime.hackclub.com/api/v1/badge/4lvaret/simpansoftware/Rotarium)
 ## Features
 - You can install both Python packages and native packages!
 - Linux and Windows support
