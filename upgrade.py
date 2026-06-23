@@ -2,6 +2,7 @@ import helper
 import requests
 import platform
 import json
+import paths
 
 def manfetch(package):
     try:
@@ -12,7 +13,7 @@ def manfetch(package):
         return
     
 def upgrade(package):
-    with open("packages.json", "r") as f:
+    with open(paths.jsonpath(), "r") as f:
         data = json.load(f)
     
     if package not in data:

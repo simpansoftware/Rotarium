@@ -3,38 +3,38 @@ import platform
 import os
 import json
 import shutil
+import helper4packages
+import paths
 
 def get_venv():
-    if platform.system() in ("Linux", "Darwin"):
-        return "packages/venv/bin/python"
-    else:
-        return "packages/venv/Scripts/python.exe"
+    return str(paths.venvpath())
         
 def install_package(package):
     if is_installed(package):
         print(f"{package} is already installed")
         return
+    
+    if package.startswith("python-"):
+        thing = package[len("python-"):]
+        print("installing:", package)
+        result = subprocess.run([get_venv(), "-m", "pip", "install", thing]).returncode
     else:
+        result = helper4packages.install(package)
+        if result is None:
+            result = 1
+    if result == 0:
         if package.startswith("python-"):
-            thing = package[len("python-"):]
-            print("installing:", package)
-            result = subprocess.run([get_venv(), "-m", "pip", "install", thing])
-        else:
-            result = subprocess.run([get_venv(), os.path.abspath("helper4packages.py"), platform.system(), package])
-        
-        if result.returncode == 0:
-            if package.startswith("python-"):
-                register_pypackage(package)
-            print("done!")
-        elif result.returncode == 2:
-            print("install aborted")
-        else:
-            print("uhh something failed and i dont know what")
+            register_pypackage(package)
+        print("done!")
+    elif result == 2:
+        print("install aborted")
+    else:
+        print("uhh something failed and i dont know what")
 
 #copied straight out of helper4packages with some json change
 def register_pypackage(package):
     try:
-        with open("packages.json", "r") as f:
+        with open(paths.jsonpath(), "r") as f:
             content = f.read()
             data = json.loads(content) if content.strip() else {}
     except FileNotFoundError:
@@ -44,7 +44,7 @@ def register_pypackage(package):
         "type": "python",
     }
     
-    with open("packages.json", "w") as f:
+    with open(paths.jsonpath(), "w") as f:
         json.dump(data, f, indent=4)
 
 def run(thing, args=None):
@@ -55,7 +55,7 @@ def run(thing, args=None):
         print(f"running {package}")
         subprocess.run([str(get_venv()), "-m", package, *args])
     else:
-        with open("packages.json", "r") as f:
+        with open(paths.jsonpath(), "r") as f:
             data = json.load(f)
         if thing in data:
             subprocess.run([data[thing]["binary"], *args])
@@ -69,7 +69,7 @@ def pyrun(thing, args=None):
     subprocess.run([get_venv(), os.path.abspath(thing), *args])
 
 def is_installed(package):
-    with open("packages.json", "r") as f:
+    with open(paths.jsonpath(), "r") as f:
         shittyvariablename = json.load(f)
     return package in shittyvariablename
     
@@ -83,18 +83,18 @@ def uninstall(package):
             thing = package[len("python-"):]
             subprocess.run([get_venv(), "-m", "pip", "uninstall", "-y", thing])
             try:
-                with open("packages.json", "r") as f:
+                with open(paths.jsonpath(), "r") as f:
                     data = json.load(f)
             except json.JSONDecodeError:
                 data = {}
 
             if package in data:
                 del data[package]
-                with open("packages.json", "w") as f:
+                with open(paths.jsonpath(), "w") as f:
                     json.dump(data, f, indent=4)
         else:
             try:
-                with open("packages.json", "r") as f:
+                with open(paths.jsonpath(), "r") as f:
                     data = json.load(f)
             except json.JSONDecodeError:
                 data = {}
@@ -104,13 +104,13 @@ def uninstall(package):
                 else:
                     os.remove(data[package]["binary"])
                 del data[package]
-                with open("packages.json", "w") as f:
+                with open(paths.jsonpath(), "w") as f:
                     json.dump(data, f, indent=4)
 
         print(f"uninstalled {package}")
 
 def package_data(package):
-    with open("packages.json", "r") as f:
+    with open(paths.jsonpath(), "r") as f:
         data = json.load(f)
     return data.get(package)
 

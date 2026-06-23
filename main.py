@@ -3,6 +3,7 @@ import helper
 import helper4packages
 import upgrade
 import json
+import paths
 
 dependencies = {"python-requests"}
 
@@ -48,7 +49,7 @@ elif arg == "help":
     print(helptext)
 elif arg == "list":
     print("installed packages:")
-    with open("packages.json", "r") as f:
+    with open(paths.jsonpath(), "r") as f:
         data = json.load(f)
     if not data:
         print("no packages installed")

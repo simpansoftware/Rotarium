@@ -3,6 +3,7 @@ import platform
 import sys
 import json
 import hashlib
+import paths
 
 def search(package):
     r = requests.get(f"https://simpansoftware.cc/rotarium-repo/{platform.system()}.txt")
@@ -54,10 +55,11 @@ def install(package):
                     return 2
     else:
         print("specified package does not exist")
+        return 1
 
 def register_package(package, binary_path, version, info, package_dir=None):
     try:
-        with open("packages.json", "r") as f:
+        with open(paths.jsonpath(), "r") as f:
             content = f.read()
             data = json.loads(content) if content.strip() else {}
     except FileNotFoundError:
@@ -70,7 +72,7 @@ def register_package(package, binary_path, version, info, package_dir=None):
         "info": info
     }
     
-    with open("packages.json", "w") as f:
+    with open(paths.jsonpath(), "w") as f:
         json.dump(data, f, indent=4)
 
 # why did i spend 30 minutes debugging just to forget this :sob:
