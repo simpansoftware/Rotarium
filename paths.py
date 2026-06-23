@@ -2,6 +2,7 @@
 
 import shutil
 import sys
+import subprocess
 from pathlib import Path
 
 def appdir():
@@ -9,6 +10,21 @@ def appdir():
     path.mkdir(parents=True, exist_ok=True)
     return path
 
+def validpython(cmd):
+    try:
+        result = subprocess.run(cmd + ["-c", "import sys; print(sys.executable)"], capture_output=True, text=True, timeout=2)
+        path = result.stdout.strip()
+
+        if not path:
+            return False
+
+        if "WindowsApps" in path:
+            return False
+        
+        return True
+
+    except Exception:
+        return False
 
 def packageroot():
     return appdir() / "packages"
@@ -31,8 +47,8 @@ def syspy():
     else:
         candidates = [["python3"], ["python"]]
 
-    for candidate in candidates:
-        if shutil.which(candidate[0]):
-            return candidate
+    for cmd in candidates:
+        if shutil.which(cmd[0]) and validpython(cmd):
+            return cmd
 
     return None
